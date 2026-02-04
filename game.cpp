@@ -3,7 +3,10 @@
 #include <fstream>
 Game::Game()
 {
+	music = LoadMusicStream("Sounds/music.ogg");
+	explosionSound = LoadSound("Sounds/explosion.ogg");
 
+	PlayMusicStream(music);
 	InitGame();
 	
 }
@@ -11,6 +14,8 @@ Game::Game()
 Game::~Game()
 {
 	Alien::UnloadImages();
+	UnloadMusicStream(music);
+	UnloadSound(explosionSound);
 }
 
 void Game::Update()
@@ -195,6 +200,7 @@ void Game::CheckForCollisions()
 		{
 			if (CheckCollisionRecs(it->getRect(), laser.getRect()))
 			{
+				PlaySound(explosionSound);
 				if (it->type == 1)
 					score += 100;
 				else if (it->type == 2)
@@ -228,6 +234,7 @@ void Game::CheckForCollisions()
 			laser.active = false;
 			score += 500;
 			CheckForHighScore();
+			PlaySound(explosionSound);
 		}
 	}
 

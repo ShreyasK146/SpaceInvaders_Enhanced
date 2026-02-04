@@ -34,6 +34,7 @@ int main()
 
 	while (!WindowShouldClose())
 	{
+		UpdateMusicStream(game.music);
 		game.HandleInput();
 		game.Update();
 		BeginDrawing();
