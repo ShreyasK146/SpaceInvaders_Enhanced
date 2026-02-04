@@ -11,6 +11,10 @@ public:
 	void Draw();
 	void Update();
 	void HandleInput();
+	bool run;
+	int lives;
+	int score;
+	int highscore;
 private:
 	void DeleteInactiveLasers();
 	std::vector<Obstacle> CreateObstacles();
@@ -18,6 +22,13 @@ private:
 	void MoveAliens();
 	void MoveDownAliens(int distance);
 	void AlienShootLaser();
+	void CheckForCollisions();
+	void GameOver();
+	void Reset();
+	void InitGame();
+	void CheckForHighScore();
+	void SaveHighScoreToFile(int highscore);
+	int loadHighScoreFromFile();
 	Player player;
 	std::vector<Obstacle>obstacles;
 	std::vector<Alien>aliens;
@@ -28,4 +39,5 @@ private:
 	MysteryShip mysteryship;
 	float mysteryShipSpawnInterval;
 	float timeLastSpawn;
+	
 };
