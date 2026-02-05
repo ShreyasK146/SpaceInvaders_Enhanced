@@ -42,6 +42,7 @@ void Obstacle::Draw()
     for (auto& block : blocks)
     {
         block.Draw();
+        
     }
 }
 

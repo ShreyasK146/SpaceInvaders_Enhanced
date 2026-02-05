@@ -155,12 +155,12 @@ void Game::MoveAliens()
 		if (alien.position.x + alien.alienImages[alien.type - 1].width > GetScreenWidth()- 25)
 		{
 			aliensDirection = -1;
-			MoveDownAliens(4);
+			MoveDownAliens(5);
 		}
 		else if (alien.position.x < 25)
 		{
 			aliensDirection = 1;
-			MoveDownAliens(4);
+			MoveDownAliens(5);
 		}
 		alien.Update(aliensDirection);
 	}
