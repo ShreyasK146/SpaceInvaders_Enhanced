@@ -10,7 +10,7 @@ MysteryShip::~MysteryShip()
 {
 	UnloadTexture(image);
 }
-
+//spawning mystery ship at top left or right side
 void MysteryShip::Spawn()
 {
 	position.y = 90;
@@ -29,12 +29,13 @@ void MysteryShip::Spawn()
 	alive = true;
 }
 
+// move the mystery ship horizontally
 void MysteryShip::Update()
 {
 	if (alive)
 	{
 		position.x += speed;
-		if (position.x > GetScreenWidth() - image.width-25 || position.x < 25)
+		if (position.x > GetScreenWidth() - image.width-25 || position.x < 25) // kill it when it goes out of bounds no points though
 			alive = false;
 	}
 		
@@ -47,7 +48,7 @@ void MysteryShip::Draw()
 		DrawTextureV(image, position, WHITE);
 	}
 }
-
+// same logic as obstacle to draw rect around mystery ship for colliision detection
 Rectangle MysteryShip::getRect()
 {
 	if (alive)

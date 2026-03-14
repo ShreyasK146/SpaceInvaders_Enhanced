@@ -1,6 +1,8 @@
 #include "obstacle.h"
 
-
+/*
+* player defence blocks / obstacle
+*/
 std::vector<std::vector<int>> Obstacle::grid = {
 {0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0},
 {0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0},
@@ -17,6 +19,7 @@ std::vector<std::vector<int>> Obstacle::grid = {
 {1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1}
 };
 
+//build obstacle each of cell of size 3 pixel 
 Obstacle::Obstacle(Vector2 position)
 {
 	this->position = position;

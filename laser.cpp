@@ -13,6 +13,7 @@ void Laser::Draw()
 	if(active)
 		DrawRectangle(position.x, position.y, 4, 15, { 243,216,63,255 });
 }
+// get laser rect for collision detection
 Rectangle Laser::getRect()
 {
 	Rectangle rect;
@@ -24,11 +25,11 @@ Rectangle Laser::getRect()
 }
 void Laser::Update()
 {
-	position.y += speed;
+	position.y += speed; /// move in y axis
 
 	if (active)
 	{
-		if (position.y > GetScreenHeight()-100|| position.y < 25)
+		if (position.y > GetScreenHeight()-100|| position.y < 25) // make it inactive  when it goes out of bounds
 		{
 			active = false;
 			

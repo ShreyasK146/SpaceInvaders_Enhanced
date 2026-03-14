@@ -1,6 +1,6 @@
 #include "player.h"
 #include "game.h"
-
+//instantiate player at bottom mid
 Player::Player()
 {
 	image = LoadTexture("Images/spaceship.png");
@@ -20,7 +20,7 @@ void Player::Draw()
 {
 	DrawTexture(image, position.x, position.y, WHITE);
 }
-
+// move left right and clamp so that player cnat go outside bounds
 void Player::MoveLeft()
 {
 	position.x -= 7;
@@ -37,9 +37,14 @@ void Player::MoveRight()
 
 void Player::FireLaser()
 {
-	if (GetTime() - lastFireTime >= 0.35)
+	if (GetTime() - lastFireTime >= 0.35) // fire rate control to stop spamming bullets
 	{
 		lasers.push_back(Laser({ position.x + image.width / 2 - 2,position.y }, -6));
+		/*
+		*    position.x + image.width/2  center of the player ship
+			-2  slight adjustment to look centered
+			-6  laser moves up 6px per frame (negative y = up in raylib)
+		*/
 		lastFireTime = GetTime();
 		PlaySound(laserSound);
 	}

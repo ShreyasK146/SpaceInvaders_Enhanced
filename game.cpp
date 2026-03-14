@@ -22,6 +22,7 @@ void Game::Update()
 {
 	if (run)
 	{
+		//randomly spawn mystery ship
 		double currentTime = GetTime();
 		if (currentTime - timeLastSpawn > mysteryShipSpawnInterval)
 		{
@@ -60,7 +61,8 @@ void Game::Update()
 
 void Game::Draw()
 {
-	player.Draw();//draws spaceship
+	player.Draw();//draws player spaceship
+	//and draw others
 
 	for (auto& laser: player.lasers)
 	{
@@ -94,7 +96,7 @@ void Game::HandleInput()
 	}
 	
 }
-
+//inactive laser kill it
 void Game::DeleteInactiveLasers()
 {
 	for (auto it = player.lasers.begin(); it != player.lasers.end();)
@@ -112,12 +114,17 @@ void Game::DeleteInactiveLasers()
 			++it;
 	}
 }
-
+//create obstacles 4 of them... 
 std::vector<Obstacle> Game::CreateObstacles()
 {
-	int obstacleWidth = Obstacle::grid[0].size() * 3;
-	float gap = (GetScreenWidth() - (4 * obstacleWidth)) / 5;
-
+	int obstacleWidth = Obstacle::grid[0].size() * 3; // how wide one obstacle is in pixels
+	float gap = (GetScreenWidth() - (4 * obstacleWidth)) / 5; // remaining space split into 5 gaps
+	/*
+	*	For i=0: 1*gap + 0 - first obstacle position
+		For i=1: 2*gap + 1*obstacleWidth - second obstacle position
+		Each iteration adds one more gap and one more obstacle width to push the next obstacle further right.
+		GetScreenHeight() - 200 - places all obstacles at the same Y, 200px from the bottom.
+	*/
 	for (int i = 0; i < 4; i++)
 	{
 		float offsetX = (i + 1) * gap + i * obstacleWidth;
@@ -125,7 +132,7 @@ std::vector<Obstacle> Game::CreateObstacles()
 	}
 	return obstacles;
 }
-
+//create different type of aliens different row dioffernt aliens
 std::vector<Alien> Game::CreateAliens()
 {
 	std::vector<Alien> aliens;
@@ -148,8 +155,11 @@ std::vector<Alien> Game::CreateAliens()
 	}
 	return aliens;
 }
+
+// move 
 void Game::MoveAliens()
 {
+	// change direction of alien depending on if alien is at left or right side of screen and move down also to become close to player
 	for (auto& alien : aliens)
 	{
 		if (alien.position.x + alien.alienImages[alien.type - 1].width > GetScreenWidth()- 25)
@@ -174,25 +184,25 @@ void Game::MoveDownAliens(int distance)
 	}
 }
 
-void Game::AlienShootLaser()
-{
-
-	double currentTime = GetTime();
-	if (currentTime - timeLastAlienFired >= alienLaserShootInterval && !aliens.empty())
+	void Game::AlienShootLaser()
 	{
-		int randomIndex = GetRandomValue(0, aliens.size() - 1);
-		Alien& alien = aliens[randomIndex];
-		alienLasers.push_back(Laser({ alien.position.x + alien.alienImages[alien.type - 1].width / 2,
-									alien.position.y + alien.alienImages[alien.type - 1].height }, 6));
-		timeLastAlienFired = GetTime();
-	}
+
+		double currentTime = GetTime();
+		if (currentTime - timeLastAlienFired >= alienLaserShootInterval && !aliens.empty()) // cooldown for alien shooting or if no alien dont shoot
+		{
+			int randomIndex = GetRandomValue(0, aliens.size() - 1);
+			Alien& alien = aliens[randomIndex]; // random alien shooting
+															// center of alien horizontally ,					// bottom of alien										//laser spawns 6 unit down
+			alienLasers.push_back(Laser({ alien.position.x + alien.alienImages[alien.type - 1].width / 2, alien.position.y + alien.alienImages[alien.type - 1].height }, 6));
+			timeLastAlienFired = GetTime();
+		}
 
 	
-}
+	}
 
 void Game::CheckForCollisions()
 {
-	//player laser hitting
+	//player laser hitting and earning points depending on alient tpye
 	for (auto& laser : player.lasers)
 	{
 		auto it = aliens.begin();
@@ -214,6 +224,7 @@ void Game::CheckForCollisions()
 			else
 				++it;
 		}
+		// removes point of each obstacle if laser is hit 
 		for (auto& obstacle : obstacles)
 		{
 			auto it = obstacle.blocks.begin();
@@ -241,6 +252,7 @@ void Game::CheckForCollisions()
 	// alien laser hitting 
 	for (auto& laser : alienLasers)
 	{
+		// lives -- if alien laser hit player 
 		if (CheckCollisionRecs(laser.getRect(), player.getRect()))
 		{
 			laser.active = false;
@@ -251,6 +263,7 @@ void Game::CheckForCollisions()
 			}
 		
 		}
+		//alient fire and hit obstacle removes point of obstacle just like above palyer was doing
 		for (auto& obstacle : obstacles)
 		{
 			auto it = obstacle.blocks.begin();
@@ -267,7 +280,7 @@ void Game::CheckForCollisions()
 		}
 	}
 
-	//alien hitting obst
+	//alien itself hitting obst removes part of obstacle
 	for (auto& alien : aliens)
 	{
 		for (auto& obstacle : obstacles)

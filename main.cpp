@@ -5,9 +5,9 @@
 
 std::string FormatWithLeadingZeros(int number, int width)
 {
-	std::string numberText = std::to_string(number);
-	int leadingZeros = width - numberText.length();
-	numberText = std::string(leadingZeros, '0') + numberText;
+	std::string numberText = std::to_string(number); // 42 - "42"
+	int leadingZeros = width - numberText.length(); // 5 - 2 = 3 zeros needed
+	numberText = std::string(leadingZeros, '0') + numberText; // "000" + "42" = "00042"
 	return numberText;
 }
 
@@ -59,7 +59,7 @@ int main()
 			DrawTextureV(spaceshipImage, { x,745 }, WHITE);
 			x += 50;
 		}
-		
+		//        font  text     pos      size spacing  color
 		DrawTextEx(font, "SCORE", { 50,15 }, 34, 2, yellow);
 		std::string scoreText = FormatWithLeadingZeros(game.score, 5);
 		DrawTextEx(font, scoreText.c_str(), {50,40}, 34, 2, yellow);

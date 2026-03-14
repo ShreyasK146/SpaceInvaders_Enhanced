@@ -4,6 +4,7 @@ Texture2D Alien::alienImages[3] = {};
 
 Alien::Alien(int type, Vector2 position)
 {
+	// load different alien texture 
 	this->type = type;
 	this->position = position;
 	if (alienImages[type - 1].id == 0)
@@ -29,6 +30,7 @@ Alien::Alien(int type, Vector2 position)
 
 void Alien::Draw()
 {
+	//alien type 1,2,3 = aleinimages[0] or 1 or 2
 	DrawTextureV(alienImages[type-1], position, WHITE);
 }
 
@@ -47,12 +49,11 @@ void Alien::UnloadImages()
 
 void Alien::Update(int direction)
 {
-	position.x += direction*2;
+	position.x += direction*2; // how fast alient moves horizontally
 	
 }
-
+//Returns a rectangle that perfectly wraps the alien used for collions detection
 Rectangle Alien::getRect()
 {
-	return { position.x,position.y,float(alienImages[type - 1].width),
-	float(alienImages[type - 1].height) };
+	return { position.x,position.y,float(alienImages[type - 1].width), float(alienImages[type - 1].height) };
 }
